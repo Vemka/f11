@@ -1,0 +1,184 @@
+[
+  {
+    "model": "ykea.Item",
+    "pk": 1,
+    "fields": {
+      "item_number": "09186777",
+      "name": "KONGSWDFJORD",
+      "description" :"Divan bed, Hyllestad firm, Tustna dark grey",
+      "price" : "1488",
+      "is_new" : "True",
+      "size" : "160x200 cm",
+      "category" : "beds"
+    }
+  },
+   {
+   "model": "ykea.Item",
+    "pk": 2,
+    "fields": {
+      "item_number": "70294339",
+      "name": "LISBAÖFJK",
+      "description" :"Table, ash veneer",
+      "price" : "99",
+      "is_new" : "False",
+      "size" : "140x78 cm",
+      "category" : "table"
+    }
+  },
+  {
+  "model": "ykea.Item",
+    "pk": 3,
+    "fields": {
+      "item_number": "70294340",
+      "name": "PROGKAV",
+      "description" :"Better table",
+      "price" : "120",
+      "is_new" : "False",
+      "size" : "156x128 cm",
+      "category" : "table"
+    }
+  },
+  {
+  "model": "ykea.Item",
+    "pk": 4,
+    "fields": {
+      "item_number": "70294341",
+      "name": "VAMLÖR",
+      "description" :"small table made of vam",
+      "price" : "59",
+      "is_new" : "False",
+      "size" : "90x48 cm",
+      "category" : "table"
+    }
+  },
+  {
+  "model": "ykea.Item",
+    "pk": 5,
+    "fields": {
+      "item_number": "70294342",
+      "name": "FÖRNYGÄ",
+      "description" :"made of wood, real wood",
+      "price" : "399",
+      "is_new" : "False",
+      "size" : "150x88 cm",
+      "category" : "table"
+    }
+  },
+  {
+  "model": "ykea.Item",
+    "pk": 6,
+    "fields": {
+      "item_number": "70294343",
+      "name": "ÅMMEKUGGA",
+      "description" :"Table, long one",
+      "price" : "149",
+      "is_new" : "False",
+      "size" : "200x68 cm",
+      "category" : "table"
+    }
+  },
+  {
+  "model": "ykea.Item",
+    "pk": 7,
+    "fields": {
+      "item_number": "70294344",
+      "name": "INGBYVEST",
+      "description" :"small bed",
+      "price" : "199",
+      "is_new" : "True",
+      "size" : "200x80 cm",
+      "category" : "beds"
+    }
+  },
+  {
+  "model": "ykea.Item",
+    "pk": 8,
+    "fields": {
+      "item_number": "70294345",
+      "name": "ALLÖNYGÄ",
+      "description" :"antic bed",
+      "price" : "399",
+      "is_new" : "True",
+      "size" : "190x78 cm",
+      "category" : "beds"
+    }
+  },
+  {
+  "model": "ykea.Item",
+    "pk": 9,
+    "fields": {
+      "item_number": "70294346",
+      "name": "ITTEPROG",
+      "description" :"Large bed",
+      "price" : "599",
+      "is_new" : "False",
+      "size" : "200x168 cm",
+      "category" : "beds"
+    }
+  },
+  {
+  "model": "ykea.Item",
+    "pk": 10,
+    "fields": {
+      "item_number": "70294347",
+      "name": "LUTTITTE",
+      "description" :"bed for kids",
+      "price" : "99",
+      "is_new" : "False",
+      "size" : "150x68 cm",
+      "category" : "beds"
+    }
+  },
+  {
+  "model": "ykea.Item",
+    "pk": 11,
+    "fields": {
+      "item_number": "70294348",
+      "name": "OCKOKLUB",
+      "description" :"Microwave",
+      "price" : "149",
+      "is_new" : "False",
+      "size" : "40x35 cm",
+      "category" : "cook"
+    }
+  },
+  {
+  "model": "ykea.Item",
+    "pk": 12,
+    "fields": {
+      "item_number": "70294349",
+      "name": "OCKOALBO",
+      "description" :"Glass fridge",
+      "price" : "699",
+      "is_new" : "False",
+      "size" : "70x200 cm",
+      "category" : "cook"
+    }
+  },
+  {
+  "model": "ykea.Item",
+    "pk": 13,
+    "fields": {
+      "item_number": "70294350",
+      "name": "LUTTSTÄL",
+      "description" :"family sized toaster",
+      "price" : "199",
+      "is_new" : "False",
+      "size" : "60x78 cm",
+      "category" : "cook"
+    }
+  },
+  {
+  "model": "ykea.Item",
+    "pk": 14,
+    "fields": {
+      "item_number": "70294351",
+      "name": "NITTHOLM",
+      "description" :"exquisite pan",
+      "price" : "169",
+      "is_new" : "False",
+      "size" : "30x30 cm",
+      "category" : "cook"
+    }
+  }
+]

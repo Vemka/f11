@@ -1,0 +1,21 @@
+<a href="/ykea"> ykea </a> / {{category}}
+{% if items %}
+    
+    <form action="{% url 'shoppingcart'%}" method="post">
+     {% csrf_token %}
+    {% for item in items %}
+    <ul>
+    <label><input type= checkbox name="checkbox{{ item.item_number }}" id="checkbox{{ item.item_number }}" value="{{ item.item_number }}"/> 
+   <a href="{% url 'item' item.item_number %}">
+   {{item.name}} </a> <br>
+            {{item.description}} <br>
+             {{item.price}} €
+
+    </label> 
+    </ul>
+    {% endfor %}
+     <input type="submit" value="Add to Shopping cart" />
+	</form>
+{% else %}
+    <p>No items are available.</p>
+{% endif %}

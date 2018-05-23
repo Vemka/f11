@@ -1,0 +1,42 @@
+
+{% if Cart %}
+<ul>
+    <label>
+   Shopping cart contents:
+
+    </label>
+    </ul>
+{% if items %}
+<form action="{% url 'delete'%}" method="post">
+     {% csrf_token %}
+    {% for item in items %}
+
+    <ul>
+
+    <label><input type= checkbox name="checkbox{{ item.0 }}" id="checkbox{{ item.0 }}" value="{{ item.0 }}"/>
+        [{{item.2}}] <a href="{% url 'item' item.0 %}">{{item.1}}</a>, price: {{item.4}}€ ({{item.3}}€ per item)
+    </label>
+    </ul>
+    {% endfor %}
+     <input type="submit" value="Delete selected" />
+	</form>
+    <form action="{% url 'checkout'%}" method="post">
+        {% csrf_token %}
+    <input type="submit" value="Checkout" />
+    </form>
+<a href="/ykea"> Return </a>
+
+{% else %}
+<ul>
+    <label>
+   <p>No items selected</p>
+    <a href="/ykea"> Return </a>
+    </label>
+    </ul>
+{% endif %}
+
+{% else %}
+    <p>Session does not exist</p>
+	<a href="/ykea"> Return </a>
+
+{% endif %}

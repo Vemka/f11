@@ -1,0 +1,6 @@
+
+.idea/vcs.xml
+*.xml
+db.sqlite3
+.idea/workspace.xml
+ykea/__pycache__/*

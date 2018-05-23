@@ -1,0 +1,43 @@
+
+
+<ul>
+    <label>
+   Congratulations! You have bought:
+
+    </label>
+    </ul>
+{% if items %}
+    {% for item in items %}
+
+    <ul>
+
+    <label>
+        [{{item.2}}] <a href="{% url 'item' item.0 %}">{{item.1}}</a>, price: {{item.4}}€ ({{item.3}}€ per item)
+    </label>
+    </ul>
+    {% endfor %}
+    <ul>
+    <label>
+   Total: {{price}}€
+
+    </label>
+    </ul>
+    <ul>
+    <label>
+   Thank you for your purchase! We will deliver your purchase at worst time as usual, and remember - no refunds!
+
+    </label>
+    </ul>
+
+    <form action="{% url 'index'%}" method="post">
+        {% csrf_token %}
+    <input type="submit" value="Return and buy more!" />
+    </form>
+{% else %}
+<ul>
+    <label>
+   <p>No items selected</p>
+    <a href="/ykea"> Return </a>
+    </label>
+    </ul>
+{% endif %}

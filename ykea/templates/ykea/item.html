@@ -1,0 +1,15 @@
+
+{% if item %}
+<a href="/ykea"> ykea </a>/ <a href="{% url 'items' item.0.category%}"> {{item.0.category}} </a>/{{item.0.name}}
+    <ul>
+    
+    <p>  {{item.0.name}}  : {{item.0.description}}</p>
+	<p>Price: {{item.0.price}}€</p>
+	<p>Size: {{item.0.size}}</p>
+	<p>id:{{item.0.item_number}}</p>
+	
+    </ul>
+{% else %}
+    <p>Item does not exist</p>
+	<a href="/ykea"> Return </a>
+{% endif %}

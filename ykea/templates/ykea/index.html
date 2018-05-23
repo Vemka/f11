@@ -1,0 +1,13 @@
+{% if categories %}
+    <ul>
+	<p>Welcome to Ykea!</p>
+	Ykea - where everything becomes furniture!
+	
+	<p>Catalogue:</p>
+    {% for category in categories %}
+    	<li><a href="{% url 'items' category.0%}"> {{category.0}} </a>  {{category.1}}  </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No categories are available.</p>
+{% endif %}
