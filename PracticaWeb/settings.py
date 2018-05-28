@@ -26,12 +26,15 @@ SECRET_KEY = 'pd+e=mqgi+5#c^x-8!7t1b4=_or6rluty7$hp&nn_=*^@owi2z'
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
-
+"""
 try:
     from ykea.local_settings import *
 except ImportError:
     # No local settings was found, skipping.
     pass
+"""
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -111,17 +114,24 @@ django_heroku.settings(locals())
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'sd2018-ykeaf11',
-        'USER': 'user',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': 'd1o2gvuss71ch5',
+        'USER': 'ndrjvggoixzbcz',
+        'PASSWORD': 'ce9d039edd33c77847a2a58bbcdc997fdb775e17e9eb6d28fc4462f8b1fd6baa',
+        'HOST': 'ec2-23-21-129-50.compute-1.amazonaws.com',
+        'PORT': '5432',
         'CONN_MAX_AGE': 500
 
     }
 }
-
-
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+"""
+LOGIN_REDIRECT_URL ="/ykea"
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
