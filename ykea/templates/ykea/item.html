@@ -1,6 +1,13 @@
 
 {% if item %}
+
 <a href="/ykea"> ykea </a>/ <a href="{% url 'items' item.0.category%}"> {{item.0.category}} </a>/{{item.0.name}}
+    <ul>{% if current_user %}
+      user: {{user.username}}, money: {{user.client.money}}  (<a href="{% url 'logout'%}">logout</a>)
+        {% else %}
+        Not <a href="{% url 'login'%}">logged</a> in?  O <a href="{% url 'register'%}">register</a>
+
+	  {% endif %}</ul>
     <ul>
     
     <p>  {{item.0.name}}  : {{item.0.description}}</p>

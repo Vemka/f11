@@ -1,6 +1,13 @@
 <a href="/ykea"> ykea </a> / {{category}}
-{% if items %}
-    
+<ul>{% if items %}
+    {% if current_user %}
+      user: {{user.username}}, money: {{user.client.money}}  (<a href="{% url 'logout'%}">logout</a>)
+        {% else %}
+        Not <a href="{% url 'login'%}">logged</a> in?  O <a href="{% url 'register'%}">register</a>
+
+	  {% endif %}</ul>
+
+
     <form action="{% url 'shoppingcart'%}" method="post">
      {% csrf_token %}
     {% for item in items %}

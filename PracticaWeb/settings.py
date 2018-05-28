@@ -26,13 +26,7 @@ SECRET_KEY = 'pd+e=mqgi+5#c^x-8!7t1b4=_or6rluty7$hp&nn_=*^@owi2z'
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
-"""
-try:
-    from ykea.local_settings import *
-except ImportError:
-    # No local settings was found, skipping.
-    pass
-"""
+
 
 
 # Application definition
@@ -169,3 +163,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+
+try:
+    from ykea.local_settings import *
+except ImportError:
+    # No local settings was found, skipping.
+    pass

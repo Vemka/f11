@@ -19,8 +19,10 @@ def index(request):
     context = {
         'categories': Item.CATEGORIES,
     }
+    if(request.user.is_authenticated()):
+        context['current_user'] = request.user
+
     return render(request, 'ykea/index.html', context)
-	#return HttpResponse("Hello, world. You're at the ykea home.")
 
 
 def items(request,category=""):
@@ -29,6 +31,9 @@ def items(request,category=""):
         'items': items_by_category,
         'category': category,
     }
+    if (request.user.is_authenticated()):
+        context['current_user'] = request.user
+
     return render(request, 'ykea/items.html', context)
 	
 	
@@ -37,6 +42,9 @@ def item(request,item_number=""):
     context = {
         'item': item,
     }
+    if (request.user.is_authenticated()):
+        context['current_user'] = request.user
+
     return render(request, 'ykea/item.html', context)
 
 def shoppingcart(request):
@@ -49,7 +57,7 @@ def shoppingcart(request):
             selectedItems.append(request.POST[key])
     request.session["selectedItem"] = selectedItems
     return HttpResponseRedirect(reverse('buy'))
-
+@login_required
 def buy(request):
     if "shoppingcartID" in request.session:
         sCartId = request.session["shoppingcartID"]
@@ -137,13 +145,15 @@ def checkout(request):
     if len(result)!=0:
         sc.delete()
     del request.session["shoppingcartID"]
+    request.user.client.money-=finalPrice
+    request.user.client.save()
     return render(request, 'ykea/checkout.html', context)
 
 def login_view(request):
     username = request.POST.get('username', '')
     password = request.POST.get('password', '')
     user = auth.authenticate(username=username, password=password)
-    if user is not None and user.is_active:
+    if user is not None:# and user.is_active:
         # Correct password, and the user is marked "active"
         auth.login(request, user)
         # Redirect to a success page.
