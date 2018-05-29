@@ -14,6 +14,8 @@ from django.contrib.auth.decorators import login_required
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
+from ykea.permissions import IsCommercialOrReadOnly
+from rest_framework import permissions
 
 def index(request):
     context = {
@@ -182,5 +184,33 @@ def register(request):
 
 class ItemViewSet(viewsets.ModelViewSet):
     """api endpoint"""
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsCommercialOrReadOnly,)
     queryset=Item.objects.all().order_by('item_number')
     serializer_class = ItemSerializer
+
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned items to a given category, max price and if items are new,
+        by filtering against a `corresponding parameters in the URL.
+        """
+        queryset = Item.objects.all()
+        cat = self.request.query_params.get('category', None)
+        isNew = self.request.query_params.get('new', None)
+        priceMax = self.request.query_params.get('price', None)
+
+        if cat is not None:
+            queryset = queryset.filter(category=cat)
+
+        if isNew is not None:
+            if isNew == 'yes':
+                queryset = queryset.filter(is_new=True)
+            elif isNew == 'no':
+                queryset = queryset.filter(is_new=False)
+
+        if priceMax is not None:
+            queryset = queryset.filter(price__lte = priceMax)
+
+
+        return queryset
