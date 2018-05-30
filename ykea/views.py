@@ -80,29 +80,31 @@ def buy(request):
         sc = Shoppingcart.objects.create()
         request.session["shoppingcartID"] = sc.id
         sCartId = sc.id
-    for itemId in request.session["selectedItem"]:
-        item = Item.objects.get(item_number=itemId)
-        try:
-            itemCnt=ItemCnt.objects.get(sCartId=sc, itemId=item)
-            itemCnt.count = itemCnt.count + 1
-            itemCnt.save()
-            #break
-        except ItemCnt.DoesNotExist:
-            itemCnt = ItemCnt.objects.create(sCartId=sc, itemId=item)
+    context={}
+    if "selectedItem" in request.session.keys():
+        for itemId in request.session["selectedItem"]:
+            item = Item.objects.get(item_number=itemId)
+            try:
+                itemCnt=ItemCnt.objects.get(sCartId=sc, itemId=item)
+                itemCnt.count = itemCnt.count + 1
+                itemCnt.save()
+                #break
+            except ItemCnt.DoesNotExist:
+                itemCnt = ItemCnt.objects.create(sCartId=sc, itemId=item)
 
-    itemCountsList = ItemCnt.objects.filter(sCartId=sCartId)
-    finalPrice = 0
-    itemTuples=[]
-    for it in itemCountsList:
-        finalPrice += it.itemId.price * it.count
-        itemTuples.append((it.itemId.item_number,it.itemId.name,it.count,it.itemId.price,it.count *  it.itemId.price))
+        itemCountsList = ItemCnt.objects.filter(sCartId=sCartId)
+        finalPrice = 0
+        itemTuples=[]
+        for it in itemCountsList:
+            finalPrice += it.itemId.price * it.count
+            itemTuples.append((it.itemId.item_number,it.itemId.name,it.count,it.itemId.price,it.count *  it.itemId.price))
 
-    context = {
-        'Cart': sc,
-        'items': itemTuples,
-        'balance': request.user.client.money - finalPrice,
-        'price': finalPrice
-    }
+        context = {
+            'Cart': sc,
+            'items': itemTuples,
+            'balance': request.user.client.money - finalPrice,
+            'price': finalPrice
+        }
 
     request.session["selectedItem"] = []
     return render(request, 'ykea/shoppingcart.html', context)

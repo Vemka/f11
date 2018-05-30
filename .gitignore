@@ -4,4 +4,3 @@
 db.sqlite3
 .idea/workspace.xml
 ykea/__pycache__/*
-ykea/local_settings.py
