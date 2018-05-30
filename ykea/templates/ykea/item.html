@@ -1,19 +1,24 @@
 
 {% if item %}
 
-<a href="/ykea"> ykea </a>/ <a href="{% url 'items' item.0.category%}"> {{item.0.category}} </a>/{{item.0.name}}
+<a href="/ykea"> ykea </a>/ <a href="{% url 'items' item.category%}"> {{item.category}} </a>/{{item.name}}
     <ul>{% if current_user %}
-      user: {{user.username}}, money: {{user.client.money}}  (<a href="{% url 'logout'%}">logout</a>)
+      user: {{user.username}} (<a href="{% url 'buy'%}">cart</a>), money: {{user.client.money}}  (<a href="{% url 'logout'%}">logout</a>)
         {% else %}
         Not <a href="{% url 'login'%}">logged</a> in?  O <a href="{% url 'register'%}">register</a>
 
 	  {% endif %}</ul>
     <ul>
     
-    <p>  {{item.0.name}}  : {{item.0.description}}</p>
-	<p>Price: {{item.0.price}}€</p>
-	<p>Size: {{item.0.size}}</p>
-	<p>id:{{item.0.item_number}}</p>
+    <p>  {{item.name}}  : {{item.description}}</p>
+	<p>Price: {{item.price}}€</p>
+	<p>Size: {{item.size}}</p>
+	<p>id:{{item.item_number}}</p>
+
+    <form action="{% url 'shoppingcart'%}" method="post">
+        {% csrf_token %}
+    <input  name="checkbox{{ item.item_number }}" id="checkbox{{item.item_number}}" value="{{item.item_number}}" type="submit"/>
+    </form>
 	
     </ul>
 {% else %}

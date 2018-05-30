@@ -1,0 +1,7 @@
+{% if sum %}
+You've printed some money, your balance is {{user.client.money}}€
+        <a href="{% url 'index'%}">return</a>
+{% else %}
+Oh no! you've been caught by a police! all your money is gone!
+<a href="{% url 'index'%}">return</a>
+{% endif %}

@@ -1,4 +1,8 @@
-
+{% if request.user.is_authenticated %}
+user: {{user.username}}, money: {{user.client.money}}  (<a href="{% url 'logout'%}">logout</a>)
+        {% else %}
+        Not <a href="{% url 'login'%}">logged</a> in?  O <a href="{% url 'register'%}">register</a>
+{% endif %}
 {% if Cart %}
 <ul>
     <label>
@@ -20,10 +24,14 @@
     {% endfor %}
      <input type="submit" value="Delete selected" />
 	</form>
+    {% if balance >= 0 %}
     <form action="{% url 'checkout'%}" method="post">
         {% csrf_token %}
     <input type="submit" value="Checkout" />
     </form>
+    {% else %}
+    <ul>Not enough money, maybe you could <a href="/ykea/print"> print </a> some?</ul>
+    {% endif %}
 <a href="/ykea"> Return </a>
 
 {% else %}

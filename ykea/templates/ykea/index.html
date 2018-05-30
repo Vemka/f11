@@ -3,7 +3,7 @@
 	<p>Welcome to Ykea!</p>
 	<p>Ykea - where everything becomes furniture!</p>
       {% if current_user %}
-      user: {{user.username}}, money: {{user.client.money}}  (<a href="{% url 'logout'%}">logout</a>)
+      user: {{user.username}} (<a href="{% url 'buy'%}">cart</a>), money: {{user.client.money}}  (<a href="{% url 'logout'%}">logout</a>)
         {% else %}
         Not <a href="{% url 'login'%}">logged</a> in?  O <a href="{% url 'register'%}">register</a>
 

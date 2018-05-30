@@ -13,7 +13,8 @@ urlpatterns = [
     url(r'^delete/$', views.delete, name='delete'),
     url(r'^checkout/$', views.checkout, name='checkout'),
     url(r'^login/$',views.login_view,name='login'),
-    url(r'^register/$', views.register, name='register')
+    url(r'^register/$', views.register, name='register'),
+    url(r'^print/$', views.printmoney, name='print')
 ]
 
  

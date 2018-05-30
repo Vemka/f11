@@ -11,6 +11,8 @@ from rest_framework import viewsets
 from .serializers import ItemSerializer
 from django.contrib.auth.decorators import login_required
 
+from random import randint
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
@@ -40,10 +42,14 @@ def items(request,category=""):
 	
 	
 def item(request,item_number=""):
-    item= Item.objects.filter(item_number=item_number)
-    context = {
-        'item': item,
-    }
+
+    try:
+        item = Item.objects.get(item_number=item_number)
+        context = {
+            'item': item,
+        }
+    except Item.DoesNotExist:
+        context = {}
     if (request.user.is_authenticated()):
         context['current_user'] = request.user
 
@@ -85,14 +91,19 @@ def buy(request):
             itemCnt = ItemCnt.objects.create(sCartId=sc, itemId=item)
 
     itemCountsList = ItemCnt.objects.filter(sCartId=sCartId)
+    finalPrice = 0
     itemTuples=[]
     for it in itemCountsList:
-
+        finalPrice += it.itemId.price * it.count
         itemTuples.append((it.itemId.item_number,it.itemId.name,it.count,it.itemId.price,it.count *  it.itemId.price))
+
     context = {
         'Cart': sc,
-        'items': itemTuples
+        'items': itemTuples,
+        'balance': request.user.client.money - finalPrice,
+        'price': finalPrice
     }
+
     request.session["selectedItem"] = []
     return render(request, 'ykea/shoppingcart.html', context)
 
@@ -167,7 +178,7 @@ def login_view(request):
 def logout_view(request):
     auth.logout(request)
     # Redirect to a success page.
-    return HttpResponseRedirect("/account/loggedout/")
+    return HttpResponseRedirect("/ykea/")
 
 
 def register(request):
@@ -175,6 +186,7 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
+            auth.login(request, new_user)
             return HttpResponseRedirect(reverse("index"))
     else:
         form = UserCreationForm()
@@ -214,3 +226,19 @@ class ItemViewSet(viewsets.ModelViewSet):
 
 
         return queryset
+
+
+@login_required
+def printmoney(request):
+    a= randint(0,10)
+    context = {}
+    if a<5:
+        request.user.client.money=0
+        request.user.client.save()
+    else:
+        request.user.client.money += a*1337
+        request.user.client.save()
+        context = {
+            'sum': a,
+            }
+    return render(request, "ykea/money.html", context)
