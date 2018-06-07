@@ -1,5 +1,6 @@
+<a href="/ykea"> ykea </a>/ buy
 {% if request.user.is_authenticated %}
-user: {{user.username}}, money: {{user.client.money}}  (<a href="{% url 'logout'%}">logout</a>)
+<ul>user: {{user.username}}, money: {{user.client.money}}  (<a href="{% url 'logout'%}">logout</a>)</ul>
         {% else %}
         Not <a href="{% url 'login'%}">logged</a> in?  O <a href="{% url 'register'%}">register</a>
 {% endif %}

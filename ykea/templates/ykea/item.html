@@ -1,7 +1,7 @@
 
 {% if item %}
 
-<a href="/ykea"> ykea </a>/ <a href="{% url 'items' item.category%}"> {{item.category}} </a>/{{item.name}}
+<a href="/ykea"> ykea </a>/ <a href="/ykea/items"> items </a>/<a href="{% url 'items' item.category%}"> {{item.category}} </a>/{{item.name}}
     <ul>{% if current_user %}
       user: {{user.username}} (<a href="{% url 'buy'%}">cart</a>), money: {{user.client.money}}  (<a href="{% url 'logout'%}">logout</a>)
         {% else %}
@@ -17,7 +17,13 @@
 
     <form action="{% url 'shoppingcart'%}" method="post">
         {% csrf_token %}
-    <input  name="checkbox{{ item.item_number }}" id="checkbox{{item.item_number}}" value="{{item.item_number}}" type="submit"/>
+    <label><input type= checkbox name="checkbox{{ item.item_number }}" id="checkbox{{ item.item_number }}" value="{{ item.item_number }}"
+    onclick="document.getElementById('checkbox{{ item.item_number }}').checked ? document.getElementById('textbox{{ item.item_number }}').value=1 : document.getElementById('textbox{{ item.item_number }}').value=''"
+    />
+    <input type= text name="textbox{{ item.item_number }}" id="textbox{{ item.item_number }}" value="" style="width:25px;"
+    onkeypress="document.getElementById('checkbox{{ item.item_number }}').checked= true"
+    />
+      <input type="submit" value="Add to Shopping cart" />
     </form>
 	
     </ul>

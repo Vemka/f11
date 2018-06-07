@@ -1,12 +1,14 @@
+<a href="/ykea"> ykea </a>/ checkout
 
 
-<ul>
+{% if items %}
+    <ul>
     <label>
    Congratulations! You have bought:
 
     </label>
     </ul>
-{% if items %}
+
     {% for item in items %}
 
     <ul>
@@ -33,6 +35,7 @@
         {% csrf_token %}
     <input type="submit" value="Return and buy more!" />
     </form>
+
 {% else %}
 <ul>
     <label>
@@ -41,3 +44,23 @@
     </label>
     </ul>
 {% endif %}
+
+{% if billsH %}
+    <ul>Your previous purchase history:</ul>
+    {% for bill in billsH %}
+
+    {% for item in bill %}
+    <ul>
+
+    <label>
+        [{{item.2}}] <a href="{% url 'item' item.0 %}">{{item.1}}</a>, price: {{item.4}}€ ({{item.3}}€ per item)
+    </label>
+    </ul>
+    {% endfor %}
+    <ul>////////////////////</ul>
+    {% endfor %}
+
+
+
+<ul>Total previous spendings: {{priceH}}€</ul>
+    {% endif %}

@@ -12,7 +12,10 @@
     {% for category in categories %}
     	<li><a href="{% url 'items' category.0%}"> {{category.0}} </a>  {{category.1}}  </li>
     {% endfor %}
-    </ul>
+
 {% else %}
     <p>No categories are available.</p>
 {% endif %}
+
+<p> Don't forget to try our new <a href="/ykea/comparator"> search </a></p>
+        </ul>

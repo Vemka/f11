@@ -1,0 +1,183 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+
+<script type='text/javascript'> function callAPI() {
+    var requests = [];
+    var ips = {{ips|safe}};
+    var results = [];
+    var catQ = document.getElementById('catQ').value;
+    var priceQ = document.getElementById('priceQ').value;
+    var isnewQ = document.getElementById('isnewQ').value;
+
+    $("h2").remove();
+    $("h3").remove();
+
+
+    //var argQuery='/api/items/?format=json&category=' + catQ + '&price=' + priceQ + '&new=' + isnewQ + '';
+    var argQuery='/api/items/?format=json';
+
+    if ( typeof catQ !== 'undefined' && catQ!=="" ) {
+        argQuery+='&category=' + catQ;
+    }
+    if(!isNaN(parseInt(priceQ))){
+      if ( typeof priceQ !== 'undefined' && priceQ!=="" ) {
+          argQuery+='&price=' + parseInt(priceQ);
+      }
+     }
+    if ( typeof isnewQ !== 'undefined' && isnewQ!=="" ) {
+        argQuery+='&new=' + isnewQ;
+    }
+
+
+    for (var i=0; i<ips.length; i++) {
+
+        $("pp").html(ips[i]);
+        requests.push(
+            $.ajax(
+                {url: 'http://' + ips[i] + argQuery,
+                type : 'GET',
+                dataType : 'json',
+                    error : function(jqXHR, exception) {
+                        var msg = '';
+                        if (jqXHR.status === 0) {
+                            msg = ' Not connected.\n Verify Network.';
+                        } else if (jqXHR.status == 404) {
+                            msg = 'Requested page not found. [404]';
+                        } else if (jqXHR.status == 500) {
+                            msg = 'Internal Server Error [500].';
+                        } else if (exception === 'parsererror') {
+                            msg = 'Requested JSON parse failed.';
+                        } else if (exception === 'timeout') {
+                            msg = 'Time out error.';
+                        } else if (exception === 'abort') {
+                            msg = 'Ajax request aborted.';
+                        } else {
+                            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                        }
+                        er = jqXHR.responsetext
+
+
+                        console.log( "Error: " + msg )
+                     }, success: function(data){
+                        if(data['results'].length==0){
+                            $( "<h2>" ).text("Nothing found, try other parameters").appendTo( "body" );
+                        }
+                        for (var i=0; i<data['results'].length; i++) {
+                            it = "<a href=\""+  data['results'][i]['url'] +"\">["+ data['results'][i]['price'] +"€]</a>"
+                            item = " " + data['results'][i]['name']
+                            + ": "
+                            + data['results'][i]['description']
+                            + ", Category: " + data['results'][i]['category']
+                            + ", New: " + data['results'][i]['is_new']
+                            $( "<h2>" ).html(it+item ).appendTo( "body" );
+                            //$( "<h3>" ).text(item ).appendTo( "body" );
+                        }
+                    }
+                }
+            )
+            );
+        }
+     return requests;
+    //$.when.apply($, requests).done(function() {alert("hola");});
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+    <body>
+    <a href="/ykea"> ykea </a>/comparator
+    <form>
+      <fieldset>
+        <legend>Search options</legend>
+        <p>
+
+
+
+
+
+
+
+
+
+
+
+          <label>Category</label>
+          <select  id="catQ">
+          <option value="">all</option>
+          <option value="beds">Beds</option>
+          <option value="furn">Furniture</option>
+          <option value="sofa">Sofas</option>
+          <option value="table">Tables</option>
+          <option value="texti">Textiles</option>
+          <option value="deco">Decoration</option>
+          <option value="light">Lighing</option>
+          <option value="cook">Cookware</option>
+          <option value="tablw">Tableware</option>
+          <option value="taps">Taps</option>
+          <option value="org">Organisers</option>
+          <option value="toys">Toys</option>
+          <option value="leis">Leisure</option>
+          <option value="safe">Safety</option>
+          <option value="diy">Do-it-yourself</option>
+          <option value="floor">Flooring</option>
+          <option value="plant">Plants</option>
+          <option value="food">Food</option>
+
+          </select>
+
+          <label>  Price</label>
+          <input type = "text"
+                 onkeypress="return event.keyCode != 13"
+                 id = "priceQ"
+                 value = "" />
+
+
+
+
+
+
+
+        <label>  is new</label>
+        <select  id="isnewQ">
+          <option value="">all</option>
+          <option value="yes">yes</option>
+          <option value="no">no</option>
+        </select>
+
+        </p>
+      </fieldset>
+    </form>
+    <p><button onclick="callAPI();">Search</button></p>
+
+
+    <script type='text/javascript'>
+    document.getElementById('catQ').onkeydown = function(event) {
+        if (event.keyCode == 13) {
+            callAPI();
+            }
+    }
+    document.getElementById('priceQ').onkeydown = function(event) {
+        if (event.keyCode == 13) {
+            callAPI();
+            }
+    }
+    document.getElementById('isnewQ').onkeydown = function(event) {
+        if (event.keyCode == 13) {
+            callAPI();
+            }
+    }
+
+    </script>
+
+
+
+    </body>

@@ -4,6 +4,8 @@ from django.http import HttpResponse,HttpResponseRedirect
 from .models import Item
 from .models import Shoppingcart
 from .models import ItemCnt
+from .models import ItemHist
+from .models import Bill
 from django.core.urlresolvers import reverse
 from django.contrib import auth
 from django.contrib.auth.models import User, Group
@@ -30,7 +32,10 @@ def index(request):
 
 
 def items(request,category=""):
-    items_by_category = Item.objects.filter(category=category)
+    if(category==""):
+        items_by_category=Item.objects.all
+    else:
+        items_by_category = Item.objects.filter(category=category)
     context = {
         'items': items_by_category,
         'category': category,
@@ -62,7 +67,14 @@ def shoppingcart(request):
     selectedItems = []
     for key in request.POST:
         if key.startswith("checkbox"):
-            selectedItems.append(request.POST[key])
+            val=request.POST["textbox"+str(request.POST[key])]
+            try:
+                valInt = int(val)
+            except ValueError:
+                valInt = 1
+            valInt=abs(valInt)
+            if valInt != 0:
+                selectedItems.append((request.POST[key],valInt))
     request.session["selectedItem"] = selectedItems
     return HttpResponseRedirect(reverse('buy'))
 @login_required
@@ -71,6 +83,7 @@ def buy(request):
         sCartId = request.session["shoppingcartID"]
     else:
         #print ("entramos en segundo if")
+
         sCart = Shoppingcart.objects.create()
         request.session["shoppingcartID"] = sCart.id
         sCartId = sCart.id
@@ -83,14 +96,16 @@ def buy(request):
     context={}
     if "selectedItem" in request.session.keys():
         for itemId in request.session["selectedItem"]:
-            item = Item.objects.get(item_number=itemId)
+            item = Item.objects.get(item_number=itemId[0])
             try:
                 itemCnt=ItemCnt.objects.get(sCartId=sc, itemId=item)
-                itemCnt.count = itemCnt.count + 1
+                itemCnt.count = itemCnt.count + itemId[1]
                 itemCnt.save()
                 #break
             except ItemCnt.DoesNotExist:
                 itemCnt = ItemCnt.objects.create(sCartId=sc, itemId=item)
+                itemCnt.count = itemId[1]
+                itemCnt.save()
 
         itemCountsList = ItemCnt.objects.filter(sCartId=sCartId)
         finalPrice = 0
@@ -145,7 +160,35 @@ def checkout(request):
         request.session["shoppingcartID"] = sCart.id
         sCartId = sCart.id
     sc = Shoppingcart.objects.get(id=sCartId)
-    finalItems=ItemCnt.objects.filter(sCartId=sc)
+    finalItems = ItemCnt.objects.filter(sCartId=sc)
+    histBills = Bill.objects.filter(user=request.user)
+    resultHist=[]
+    histPrice = 0
+    #saving previous purchases as tuples for html template
+    for bill in histBills:
+        billH=[]
+        histItems = ItemHist.objects.filter(billId=bill)
+        for itemH2 in histItems:
+            billH.append(
+                (itemH2.itemId.item_number, itemH2.itemId.name, itemH2.count, itemH2.itemId.price,
+                 itemH2.count * itemH2.itemId.price))
+            histPrice += itemH2.count * itemH2.itemId.price
+        resultHist.append(billH)
+
+    #saving current purchased items in bill history
+    if len(finalItems)!=0:
+
+        bill=Bill.objects.create(user=request.user)
+
+    for itemCn in finalItems:
+        itemH = ItemHist.objects.create(billId=bill, itemId=itemCn.itemId)
+        itemH.count=itemCn.count
+        itemH.save()
+
+
+
+
+
     result=[]
     finalPrice=0
     for it in finalItems:
@@ -154,7 +197,14 @@ def checkout(request):
         finalPrice+=it.count * it.itemId.price
         context = {
             'items': result,
-            'price': finalPrice
+            'price': finalPrice,
+            'billsH': resultHist,
+            'priceH': histPrice
+        }
+    if len(finalItems) == 0:
+        context = {
+            'billsH': resultHist,
+            'priceH': histPrice
         }
     ItemCnt.objects.filter(sCartId=sc).delete()
     if len(result)!=0:
@@ -244,3 +294,12 @@ def printmoney(request):
             'sum': a,
             }
     return render(request, "ykea/money.html", context)
+
+def comparator(request,**kwargs):
+    #print(kwargs)
+
+    context = {
+        'ips': kwargs['ips'],
+    }
+
+    return render(request, "ykea/comparator.html", context)

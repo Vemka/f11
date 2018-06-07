@@ -67,6 +67,30 @@ class ItemCnt(models.Model):
         # do something with the book
         return itemCnt  #sCart
 
+class ItemHist(models.Model):
+    billId = models.ForeignKey("Bill")
+    itemId = models.ForeignKey("Item")
+    count = models.IntegerField(default=1)
+    def create(cls, billId, itemId):
+
+        itemH = cls(billId=billId, Item_id=itemId)
+        itemH.count = 1
+        return itemH
+
+class Bill(models.Model):
+    id=models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    items=models.ManyToManyField(
+        Item,
+        through='ItemHist',
+    )
+    def create(cls,userId):
+
+        bill = cls(user=userId)
+        return bill
+
+
+
 
 
 class Client(models.Model):
